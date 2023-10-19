@@ -7,7 +7,7 @@ class FormBuilderConditionalAction2 extends WireData implements Module
     return array(
       'title' => "FormBuilder Conditional 3rd Party Service",
       'summary' => "Set a condition for FormBuilder's 3rd party action",
-      'version' => 100,
+      'version' => 200,
       'autoload' => true
     );
   }
@@ -38,6 +38,7 @@ class FormBuilderConditionalAction2 extends WireData implements Module
       if($form_config->action2_condition){
         $values = $this->textToArray($form_config->action2_condition);
         foreach($values as $field => $val){
+          /** @var InputfieldCheckbox $field_with_condition */
           $field_with_condition = $form->getChildByName($field);
 
           try{
@@ -58,10 +59,10 @@ class FormBuilderConditionalAction2 extends WireData implements Module
     });
 
     $this->addHookBefore('ProcessFormBuilder::executeSaveForm', function ($e) {
-      $condition = $e->input->post->action_condition;
+      $condition = $e->input->post->action2_condition;
       $e->addHookBefore('FormBuilder::save', function ($e) use ($condition) {
         $form = $e->arguments(0);
-        $form->set('action_condition', $condition);
+        $form->set('action2_condition', $condition);
         $e->arguments(0, $form);
       });
     });
@@ -72,7 +73,7 @@ class FormBuilderConditionalAction2 extends WireData implements Module
       if ($id) {
         $form = $e->object->getForm($id);
       }
-      $custom_field_value = $form->action_condition ?: null;
+      $custom_field_value = $form->action2_condition ?: null;
       $actions = $e->return->children()->get('title=Actions');
       $actions->children->each(function ($field) use ($custom_field_value) {
         if ($field->attributes['id'] == "fieldset3rdParty") {
