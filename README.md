@@ -1,5 +1,7 @@
 # FormBuilderConditionalAction2
-Set a matching form field's value as a condition for FormBuilder's 3rd party action to continue.
+Set a matching form field's value as a condition for FormBuilder's 3rd party action to continue. 
+
+An extra textarea field will be added to the 3rd party action options.
 
 ## Example
 
